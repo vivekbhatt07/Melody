@@ -148,6 +148,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
+  //@ts-ignore
   const { order, orderBy, rowCount, onRequestSort } = props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -196,6 +197,7 @@ export default function TableProvider() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
+    //@ts-ignore
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => {
@@ -204,6 +206,7 @@ export default function TableProvider() {
     setOrderBy(property);
   };
 
+  //@ts-ignore
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -231,7 +234,7 @@ export default function TableProvider() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", boxShadow: "none" }}>
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table aria-labelledby="tableTitle">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -239,7 +242,7 @@ export default function TableProvider() {
               rowCount={rows.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows.map((row) => {
                 return (
                   <TableRow
                     hover
