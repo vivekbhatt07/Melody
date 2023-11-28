@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Dashboard as DashboardIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import LogoutIcon from "../../assets/images/logoutIcon";
+import LogoutIcon from "../../assets/images/logoutIcon.svg";
 import { TableProvider } from "../../components";
 
 const Dashboard = () => {
@@ -57,7 +57,7 @@ const Dashboard = () => {
             }}
           >
             {" "}
-            <LogoutIcon />
+            <img src={LogoutIcon} alt="logout" />
             Logout
           </Button>
         </div>
