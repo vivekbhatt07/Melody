@@ -1,13 +1,49 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Dashboard as DashboardIcon } from "@mui/icons-material";
+import { Dashboard as DashboardIcon, Delete } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import LogoutIcon from "../../assets/images/logoutIcon.svg";
-import { TableProvider } from "../../components";
+import {
+  BasicInput,
+  IconAction,
+  ModalProvider,
+  TableProvider,
+} from "../../components";
+import { styled } from "@mui/material/styles";
+
+import UploadIcon from "../../assets/images/uploadIcon.svg";
 
 const Dashboard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  // @ts-ignore
+  const [file, setFile] = useState({ name: "", path: "" });
+  // @ts-ignore
+  function handleChange(e: any) {
+    console.log(e.target.files);
+    // @ts-ignore
+    setFile({
+      name: e.target.files[0].name,
+      path: URL.createObjectURL(e.target.files[0]),
+    });
+  }
   // const sidebarShadow = {
   //   boxShadow: "-1px 0px 0px 0px #0000000D",
   // };
+  console.log(file);
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
   return (
     <div className="h-screen flex">
       <aside
@@ -88,23 +124,135 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button
-              sx={{
-                textTransform: "capitalize",
-                color: "#000000",
-                backgroundColor: "#FDB927",
-                padding: "6px 16px",
-                fontSize: "14px",
-                lienHeight: "22px",
-                fontWeight: 400,
-                borderRadius: "2px",
-                "&:hover": {
-                  backgroundColor: "#FDA600",
-                },
-              }}
+            <ModalProvider
+              isOpen={isModalOpen}
+              title="ADD SONG"
+              closeModal={closeModal}
+              OpenAction={
+                <Button
+                  onClick={() => openModal()}
+                  sx={{
+                    textTransform: "capitalize",
+                    color: "#000000",
+                    backgroundColor: "#FDB927",
+                    padding: "6px 16px",
+                    fontSize: "14px",
+                    lienHeight: "22px",
+                    fontWeight: 400,
+                    borderRadius: "2px",
+                    "&:hover": {
+                      backgroundColor: "#FDA600",
+                    },
+                  }}
+                >
+                  Add Songs
+                </Button>
+              }
             >
-              Add Songs
-            </Button>
+              <form className="bg-[#fff] px-8">
+                <div className="flex flex-col gap-2">
+                  <BasicInput
+                    labelText="Song Name"
+                    placeholderText="Song Name"
+                  />
+                  <BasicInput labelText="Song Link" placeholderText="URL" />
+                  <BasicInput
+                    labelText="Song Source"
+                    placeholderText="Source Name"
+                  />
+                </div>
+                <div>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    startIcon={<img src={UploadIcon} alt="upload" />}
+                    sx={{
+                      borderRadius: "2px",
+                      backgroundColor: "transparent",
+                      boxShadow: "none",
+                      textTransform: "capitalize",
+                      color: "#000000D9",
+                      border: "1px solid #D9D9D9",
+                      "&:hover": {
+                        backgroundColor: "#ddd",
+                        boxShadow: "none",
+                        border: "1px solid #D9D9D9",
+                      },
+                    }}
+                  >
+                    Click to Upload Profile Thumbnail
+                    <VisuallyHiddenInput type="file" onChange={handleChange} />
+                  </Button>
+                  <div className="flex p-2 border-1 border-[#ddd] justify-between">
+                    <div className="flex gap-2 items-center">
+                      <img src={file.path} width={48} height={48} />
+                      <span
+                        style={{
+                          color: "#1890FF",
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {file.name}
+                      </span>
+                    </div>
+                    <IconAction>
+                      <Delete />
+                    </IconAction>
+                  </div>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: "22px",
+                      fontWeight: 400,
+                      color: "#00000073",
+                    }}
+                  >
+                    Image has to be of aspect ratio 1:1 with a size of 3000
+                    pixels x 3000 pixels
+                  </p>
+                </div>
+                <div className="flex justify-end">
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        borderRadius: "2px",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                        textTransform: "capitalize",
+                        color: "#000000D9",
+                        border: "1px solid #D9D9D9",
+                        "&:hover": {
+                          backgroundColor: "#ddd",
+                          boxShadow: "none",
+                          border: "1px solid #D9D9D9",
+                        },
+                      }}
+                      onClick={() => closeModal()}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        borderRadius: "2px",
+                        backgroundColor: "#1890FF",
+                        boxShadow: "none",
+                        textTransform: "capitalize",
+                        "&:hover": {
+                          backgroundColor: "#1890FF",
+                          boxShadow: "none",
+                        },
+                      }}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </ModalProvider>
           </div>
         </div>
         {/* BODY */}
