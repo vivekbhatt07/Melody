@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 
 const IconAction = styled(IconButton)<IconButtonProps>(() => ({
   color: "#fff",
-  backgroundColor: "#a8a29e",
+  backgroundColor: "#FDB927",
   fontWeight: "400",
   textTransform: "capitalize",
   height: "40px",
@@ -12,7 +12,7 @@ const IconAction = styled(IconButton)<IconButtonProps>(() => ({
   alignItems: "center",
   justifyContent: "center",
   "&:hover": {
-    backgroundColor: "#7c3aed",
+    backgroundColor: "#FDB92780",
   },
 }));
 

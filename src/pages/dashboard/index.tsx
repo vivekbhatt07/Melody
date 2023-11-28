@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Dashboard as DashboardIcon, Logout } from "@mui/icons-material";
+import { Dashboard as DashboardIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import LogoutIcon from "../../assets/images/logoutIcon";
+import { TableProvider } from "../../components";
 
 const Dashboard = () => {
-  const sidebarShadow = {
-    boxShadow: "-1px 0px 0px 0px #0000000D",
-  };
+  // const sidebarShadow = {
+  //   boxShadow: "-1px 0px 0px 0px #0000000D",
+  // };
   return (
     <div className="h-screen flex">
       <aside
@@ -107,6 +108,9 @@ const Dashboard = () => {
           </div>
         </div>
         {/* BODY */}
+        <div>
+          <TableProvider />
+        </div>
       </main>
     </div>
   );
