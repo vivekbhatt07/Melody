@@ -12,8 +12,8 @@ import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { IconAction } from "..";
 import { Pause, PlayArrow } from "@mui/icons-material";
-import SongLogo from "../../assets/images/songIcon.png";
 import DeleteIcon from "../../assets/images/deleteIcon.svg";
+import { TrackType } from "../../types";
 
 interface Data {
   id: string;
@@ -139,14 +139,23 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-export default function TableProvider({
+type TableProviderType = {
+  data: TrackType[];
+  deleteAction: (trackId: string) => void;
+  isPlaying: boolean;
+  togglePlayPause: () => void;
+  currentTrack: TrackType;
+  setCurrentTrack: () => void;
+};
+
+const TableProvider: React.FC<TableProviderType> = ({
   data,
   deleteAction,
   isPlaying,
   togglePlayPause,
   currentTrack,
   setCurrentTrack,
-}) {
+}) => {
   const rows = data;
   console.log(rows);
   const [order, setOrder] = React.useState<Order>("asc");
@@ -258,8 +267,10 @@ export default function TableProvider({
                         <IconAction
                           onClick={() => {
                             if (isPlaying && currentTrack.id !== row.id) {
+                              // @ts-ignore
                               return setCurrentTrack(row);
                             }
+                            // @ts-ignore
                             setCurrentTrack(row);
                             togglePlayPause();
                           }}
@@ -309,4 +320,6 @@ export default function TableProvider({
       </Paper>
     </Box>
   );
-}
+};
+
+export default TableProvider;
