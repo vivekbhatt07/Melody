@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Dashboard as DashboardIcon, Delete } from "@mui/icons-material";
+import { Dashboard as DashboardIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import LogoutIcon from "../../assets/images/logoutIcon.svg";
 import {
