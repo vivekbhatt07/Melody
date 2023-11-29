@@ -392,6 +392,7 @@ const Dashboard = () => {
               isPlaying={isPlaying}
               togglePlayPause={togglePlayPause}
               currentTrack={currentTrack}
+              // @ts-ignore
               setCurrentTrack={setCurrentTrack}
             />
           </div>
