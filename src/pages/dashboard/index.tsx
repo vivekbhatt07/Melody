@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 import UploadIcon from "../../assets/images/uploadIcon.svg";
+import DeleteIcon from "../../assets/images/deleteIcon.svg";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +32,6 @@ const Dashboard = () => {
   // const sidebarShadow = {
   //   boxShadow: "-1px 0px 0px 0px #0000000D",
   // };
-  console.log(file);
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -149,8 +149,8 @@ const Dashboard = () => {
                 </Button>
               }
             >
-              <form className="bg-[#fff] px-8">
-                <div className="flex flex-col gap-2">
+              <form className="bg-[#fff] flex flex-col gap-6">
+                <div className="flex flex-col gap-6 px-8">
                   <BasicInput
                     labelText="Song Name"
                     placeholderText="Song Name"
@@ -161,45 +161,77 @@ const Dashboard = () => {
                     placeholderText="Source Name"
                   />
                 </div>
-                <div>
-                  <Button
-                    component="label"
-                    variant="outlined"
-                    startIcon={<img src={UploadIcon} alt="upload" />}
-                    sx={{
-                      borderRadius: "2px",
-                      backgroundColor: "transparent",
-                      boxShadow: "none",
-                      textTransform: "capitalize",
-                      color: "#000000D9",
-                      border: "1px solid #D9D9D9",
-                      "&:hover": {
-                        backgroundColor: "#ddd",
-                        boxShadow: "none",
-                        border: "1px solid #D9D9D9",
-                      },
-                    }}
-                  >
-                    Click to Upload Profile Thumbnail
-                    <VisuallyHiddenInput type="file" onChange={handleChange} />
-                  </Button>
-                  <div className="flex p-2 border-1 border-[#ddd] justify-between">
-                    <div className="flex gap-2 items-center">
-                      <img src={file.path} width={48} height={48} />
-                      <span
-                        style={{
-                          color: "#1890FF",
-                          fontSize: "14px",
-                          lineHeight: "22px",
-                          fontWeight: 400,
+                <div className="flex flex-col gap-[26px] px-8">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex justify-start">
+                      <Button
+                        component="label"
+                        variant="outlined"
+                        disabled={!!file.name}
+                        startIcon={<img src={UploadIcon} alt="upload" />}
+                        sx={{
+                          borderRadius: "2px",
+                          backgroundColor: "transparent",
+                          boxShadow: "none",
+                          textTransform: "capitalize",
+                          color: "#000000D9",
+                          border: "1px solid #D9D9D9",
+                          "&:hover": {
+                            backgroundColor: "#ddd",
+                            boxShadow: "none",
+                            border: "1px solid #D9D9D9",
+                          },
                         }}
                       >
-                        {file.name}
-                      </span>
+                        Click to Upload Profile Thumbnail
+                        <VisuallyHiddenInput
+                          type="file"
+                          onChange={handleChange}
+                        />
+                      </Button>
                     </div>
-                    <IconAction>
-                      <Delete />
-                    </IconAction>
+                    {/* Added Image */}
+
+                    {file.name && (
+                      <div
+                        className="flex p-2 border-1 border-[#ddd] justify-between"
+                        style={{
+                          border: "1px solid #D9D9D9",
+                          borderRadius: "2px",
+                        }}
+                      >
+                        <div className="flex gap-2 items-center">
+                          <img
+                            src={file.path}
+                            width={48}
+                            height={48}
+                            alt="image"
+                          />
+
+                          <span
+                            style={{
+                              color: "#1890FF",
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              fontWeight: 400,
+                            }}
+                          >
+                            {file.name}
+                          </span>
+                        </div>
+                        <IconAction
+                          sx={{
+                            backgroundColor: "transparent",
+                            "&:hover": {
+                              backgroundColor: "#ddd",
+                            },
+                          }}
+                          onClick={() => setFile({ name: "", path: "" })}
+                        >
+                          <img src={DeleteIcon} alt="Delete Icon" />
+                        </IconAction>
+                      </div>
+                    )}
                   </div>
                   <p
                     style={{
@@ -213,7 +245,10 @@ const Dashboard = () => {
                     pixels x 3000 pixels
                   </p>
                 </div>
-                <div className="flex justify-end">
+                <div
+                  className="flex justify-end py-[10px] px-4"
+                  style={{ borderTop: "1px solid #D9D9D9" }}
+                >
                   <div className="flex gap-2">
                     <Button
                       variant="outlined"
