@@ -11,68 +11,16 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { IconAction } from "..";
-import { PlayArrow } from "@mui/icons-material";
+import { Pause, PlayArrow } from "@mui/icons-material";
 import SongLogo from "../../assets/images/songIcon.png";
 import DeleteIcon from "../../assets/images/deleteIcon.svg";
 
 interface Data {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   source: string;
   addedOn: string;
 }
-
-const rows = [
-  {
-    id: "1",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "2",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "3",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "4",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "5",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "6",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-  {
-    id: "7",
-    name: "Cupcake",
-    thumbnail: SongLogo,
-    source: "youtube",
-    addedOn: "17/05/2022",
-  },
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -121,7 +69,7 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "name",
+    id: "title",
     numeric: false,
     label: "SONG NAME",
   },
@@ -191,9 +139,18 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-export default function TableProvider() {
+export default function TableProvider({
+  data,
+  deleteAction,
+  isPlaying,
+  togglePlayPause,
+  currentTrack,
+  setCurrentTrack,
+}) {
+  const rows = data;
+  console.log(rows);
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("title");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -228,21 +185,21 @@ export default function TableProvider() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, rows]
   );
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", boxShadow: "none" }}>
         <TableContainer>
-          <Table aria-labelledby="tableTitle">
+          <Table aria-labelledby="tableTitle" sx={{ minHeight: "420px" }}>
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
+            <TableBody className="relative">
               {visibleRows.map((row) => {
                 return (
                   <TableRow
@@ -254,7 +211,7 @@ export default function TableProvider() {
                     <TableCell component="th" scope="row">
                       <div className="flex gap-5 items-center">
                         <div className="w-[40px] h-[40px]">
-                          <img src={row.thumbnail} alt={row.name} />
+                          <img src={row.thumbnail} alt={row.title} />
                         </div>
                         <span
                           style={{
@@ -264,7 +221,7 @@ export default function TableProvider() {
                             fontWeight: 400,
                           }}
                         >
-                          {row.name}
+                          {row.title}
                         </span>
                       </div>
                     </TableCell>
@@ -298,14 +255,27 @@ export default function TableProvider() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <IconAction>
-                          <PlayArrow />
+                        <IconAction
+                          onClick={() => {
+                            if (isPlaying && currentTrack.id !== row.id) {
+                              return setCurrentTrack(row);
+                            }
+                            setCurrentTrack(row);
+                            togglePlayPause();
+                          }}
+                        >
+                          {isPlaying && currentTrack.id === row.id ? (
+                            <Pause />
+                          ) : (
+                            <PlayArrow />
+                          )}
                         </IconAction>
                         <IconAction
                           sx={{
                             backgroundColor: "transparent",
                             "&:hover": { background: "#ddd" },
                           }}
+                          onClick={() => deleteAction(row.id)}
                         >
                           <img src={DeleteIcon} alt="delete icon" />
                         </IconAction>
@@ -314,6 +284,11 @@ export default function TableProvider() {
                   </TableRow>
                 );
               })}
+              {visibleRows.length === 0 && (
+                <div className="p-4 absolute left-1/2 -translate-x-1/2">
+                  No Playlist Found
+                </div>
+              )}
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />

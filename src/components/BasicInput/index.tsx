@@ -30,6 +30,7 @@ const BasicInput = ({
         value={value}
         onChange={handleChange}
         type={type}
+        required
       />
     </div>
   );
