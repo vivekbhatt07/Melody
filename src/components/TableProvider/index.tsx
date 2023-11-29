@@ -11,8 +11,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { IconAction } from "..";
-import { Delete, PlayArrow } from "@mui/icons-material";
+import { PlayArrow } from "@mui/icons-material";
 import SongLogo from "../../assets/images/songIcon.png";
+import DeleteIcon from "../../assets/images/deleteIcon.svg";
 
 interface Data {
   id: number;
@@ -306,7 +307,7 @@ export default function TableProvider() {
                             "&:hover": { background: "#ddd" },
                           }}
                         >
-                          <Delete sx={{ color: "#282828" }} />
+                          <img src={DeleteIcon} alt="delete icon" />
                         </IconAction>
                       </div>
                     </TableCell>

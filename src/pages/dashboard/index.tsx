@@ -10,7 +10,6 @@ import {
   TableProvider,
 } from "../../components";
 import { styled } from "@mui/material/styles";
-
 import UploadIcon from "../../assets/images/uploadIcon.svg";
 import DeleteIcon from "../../assets/images/deleteIcon.svg";
 
@@ -20,9 +19,21 @@ const Dashboard = () => {
   const closeModal = () => setIsModalOpen(false);
   // @ts-ignore
   const [file, setFile] = useState({ name: "", path: "" });
+  const [songData, setSongData] = useState({
+    songName: "",
+    songLink: "",
+    songSource: "",
+  });
+
+  const handleSongData = (event: any) => {
+    const { name, value } = event.target;
+    setSongData((prevSongData) => {
+      return { ...prevSongData, [name]: value };
+    });
+  };
+
   // @ts-ignore
   function handleChange(e: any) {
-    console.log(e.target.files);
     // @ts-ignore
     setFile({
       name: e.target.files[0].name,
@@ -75,7 +86,7 @@ const Dashboard = () => {
                 borderRight: isActive ? "5px solid #1890FF" : "2px solid #fff",
               })}
             >
-              <DashboardIcon sx={{ color: "#282828" }} />
+              <DashboardIcon sx={{ color: "#00000073" }} />
               <span>Songs</span>
             </NavLink>
           </div>
@@ -154,11 +165,26 @@ const Dashboard = () => {
                   <BasicInput
                     labelText="Song Name"
                     placeholderText="Song Name"
+                    name="songName"
+                    value={songData.songName}
+                    type="text"
+                    handleChange={handleSongData}
                   />
-                  <BasicInput labelText="Song Link" placeholderText="URL" />
+                  <BasicInput
+                    labelText="Song Link"
+                    placeholderText="URL"
+                    name="songLink"
+                    type="url"
+                    value={songData.songLink}
+                    handleChange={handleSongData}
+                  />
                   <BasicInput
                     labelText="Song Source"
                     placeholderText="Source Name"
+                    name="songSource"
+                    type="text"
+                    value={songData.songSource}
+                    handleChange={handleSongData}
                   />
                 </div>
                 <div className="flex flex-col gap-[26px] px-8">
