@@ -1,7 +1,11 @@
 import { TextField } from "@mui/material";
 import { TextAction } from "../../components";
 
-const SignIn = () => {
+import { useState } from "react";
+// @ts-ignore
+const LogIn = ({ handleRequestId }) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   return (
     <div className="flex min-h-screen">
       <div className="flex flex-col max-w-[414px] m-auto gap-[10px]">
@@ -30,11 +34,18 @@ const SignIn = () => {
           variant="outlined"
           label="Phone Number"
           sx={{ marginBottom: "15px" }}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
-        <TextAction>Sign In</TextAction>
+        <TextAction
+          onClick={() => handleRequestId(phoneNumber)}
+          disabled={!(phoneNumber.length > 10)}
+        >
+          Sign In
+        </TextAction>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default LogIn;
