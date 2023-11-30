@@ -3,9 +3,12 @@ import { Link } from "@mui/material";
 import { TextAction } from "../../components";
 import { useNavigate, useLocation } from "react-router-dom";
 import OtpInput from "react-otp-input";
-
 const Verification = ({
   handleOTP,
+  // @ts-ignore
+  setRequestId,
+  // @ts-ignore
+  handleRequestId,
 }: {
   handleOTP: { phoneNumber: string; requestId: string; otp: string };
 }) => {
@@ -59,13 +62,20 @@ const Verification = ({
           Verify
         </TextAction>
         <div className="flex flex-col gap-4 items-center">
-          <Link color="#101920" sx={{ cursor: "pointer" }}>
+          <Link
+            color="#101920"
+            sx={{ cursor: "pointer" }}
+            onClick={() => handleRequestId(state.phoneNumber)}
+          >
             Resend OTP
           </Link>
           <Link
             color="#101920"
             sx={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
+            onClick={() => {
+              setRequestId("");
+              navigate("/");
+            }}
           >
             Use another number
           </Link>

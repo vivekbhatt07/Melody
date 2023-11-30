@@ -4,6 +4,8 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { getOTP, getRequestId } from "./apiResponse";
 import { useState } from "react";
 import PublicRoute from "./auth/PublicRoute";
+import { Toaster } from "react-hot-toast";
+import { toastHandler } from "./utils";
 
 const App = () => {
   const [requestId, setRequestId] = useState<string>("");
@@ -19,16 +21,17 @@ const App = () => {
         navigate("/verification", {
           state: { requestId: response.data.requestId, phoneNumber },
         });
-        console.log(response.data.message);
+        toastHandler("success", response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      toastHandler("error", "Invalid Number");
     }
   };
 
   const logOutHandler = () => {
     setRequestId("");
     setToken("");
+    toastHandler("success", "Logout Successfully");
   };
 
   const handleOTP = async (
@@ -41,15 +44,16 @@ const App = () => {
       console.log(response);
       if (response.status === 200) {
         setToken(response.data.token);
-        console.log(response.data.message);
         navigate("/dashboard");
+        toastHandler("success", "Successfully Login with:" + phoneNumber);
       }
     } catch (error) {
-      console.error(error);
+      toastHandler("error", "Wrong OTP");
     }
   };
   return (
     <div className="min-h-screen">
+      <Toaster />
       <Routes>
         {/* @ts-ignore */}
         <Route
@@ -65,7 +69,12 @@ const App = () => {
           element={
             <PrivateRoute isRestriction={!Boolean(requestId)}>
               {/* @ts-ignore */}
-              <Verification handleOTP={handleOTP} />
+              <Verification
+                // @ts-ignore
+                handleOTP={handleOTP}
+                setRequestId={setRequestId}
+                handleRequestId={handleRequestId}
+              />
             </PrivateRoute>
           }
         />
