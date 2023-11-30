@@ -16,8 +16,8 @@ import DeleteIcon from "../../assets/images/deleteIcon.svg";
 import AudioPlayer from "./components/AudioPlayer.tsx";
 import { tracks } from "./data/tracks.ts";
 import { TrackType } from "../../types/index.ts";
-
-const Dashboard = () => {
+// @ts-ignore
+const Dashboard = ({ logOutHandler }) => {
   const [trackList, setTrackList] = useState<TrackType[]>(tracks);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [trackIndex, setTrackIndex] = useState<number>(0);
@@ -40,7 +40,6 @@ const Dashboard = () => {
     });
   };
 
-  console.log(trackList);
   // @ts-ignore
   const [file, setFile] = useState({ name: "", path: "" });
   const [songData, setSongData] = useState({
@@ -106,6 +105,7 @@ const Dashboard = () => {
     addTrack();
     closeModal();
   };
+
   return (
     <div className="h-screen flex">
       <aside
@@ -153,6 +153,7 @@ const Dashboard = () => {
               justifyContent: "flex-start",
               paddingLeft: "24px",
             }}
+            onClick={() => logOutHandler()}
           >
             {" "}
             <img src={LogoutIcon} alt="logout" />
