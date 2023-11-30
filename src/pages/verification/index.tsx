@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, TextField } from "@mui/material";
+import { Link } from "@mui/material";
 import { TextAction } from "../../components";
 import { useNavigate, useLocation } from "react-router-dom";
+import OtpInput from "react-otp-input";
 
 const Verification = ({
   handleOTP,
@@ -10,7 +11,7 @@ const Verification = ({
 }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log(state);
+
   const [otp, setOtp] = useState<string>("");
   return (
     <div className="flex min-h-screen">
@@ -34,19 +35,22 @@ const Verification = ({
             marginBottom: "15px",
           }}
         >
-          We have sent and OTP to +919889898989. Please enter the code received
-          to verify.
+          We have sent and OTP to <strong>{state.phoneNumber}</strong>. Please
+          enter the code received to verify.
         </p>
 
-        <TextField
-          variant="outlined"
-          label="OTP"
-          sx={{ marginBottom: "15px" }}
+        <OtpInput
           value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          type="number"
+          onChange={setOtp}
+          numInputs={4}
+          renderSeparator={<span style={{ width: "20px" }}></span>}
+          renderInput={(props) => <input {...props} />}
+          inputStyle={{
+            width: "100%",
+            height: "60px",
+            border: "1px solid #D0D3D4",
+          }}
         />
-
         <TextAction
           // @ts-ignore
           onClick={() => handleOTP(state.phoneNumber, state.requestId, otp)}

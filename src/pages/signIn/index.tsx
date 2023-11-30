@@ -1,10 +1,12 @@
-import { TextField } from "@mui/material";
 import { TextAction } from "../../components";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 import { useState } from "react";
 // @ts-ignore
 const LogIn = ({ handleRequestId }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  console.log(phoneNumber);
 
   return (
     <div className="flex min-h-screen">
@@ -30,16 +32,24 @@ const LogIn = ({ handleRequestId }) => {
           Please enter your mobile number to login. We will send an OTP to
           verify your number.
         </p>
-        <TextField
-          variant="outlined"
-          label="Phone Number"
-          sx={{ marginBottom: "15px" }}
+
+        <PhoneInput
+          country={"in"}
+          enableSearch={true}
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={(phone) => setPhoneNumber("+" + phone)}
+          placeholder="Phone number"
+          inputProps={{
+            required: true,
+            style: {
+              width: "100%",
+            },
+          }}
         />
         <TextAction
           onClick={() => handleRequestId(phoneNumber)}
           disabled={!(phoneNumber.length > 10)}
+          sx={{ marginTop: "16px" }}
         >
           Sign In
         </TextAction>
